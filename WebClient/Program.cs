@@ -1,5 +1,9 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebClient;
 
@@ -9,7 +13,16 @@ public class Program {
 		builder.RootComponents.Add<App>("#app");
 		builder.RootComponents.Add<HeadOutlet>("head::after");
 
-		builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+		builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+		try {
+			var api = new ServerApi();
+			api.Run();
+			builder.Services.AddSingleton(api);
+		}
+		catch (Exception e) {
+			Console.Write(e);
+		}
 
 		await builder.Build().RunAsync();
 	}

@@ -1,17 +1,43 @@
 ﻿@page "/counter"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Web Chat</PageTitle>
 
-<h1>Counter</h1>
+<h1>Web Chat</h1>
 
-<p role="status">Current count: @currentCount</p>
+@foreach (var message in Messages) {
+    <div>
+        @if (message.Sender != null) {
+            <span>@message.Sender:</span>
+            <span>@message.Text</span>
+        } else {
+            <span>@message.Text</span>
+        }
+    </div>
+}
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<input @bind="CurrentMessage" @bind:event="oninput" @onkeydown="HandleKeyDown" placeholder="Type a message..."/>
+<button @onclick="SubmitMessage">Send</button>
 
 @code {
-    private int currentCount = 0;
+    [Inject] public ServerApi ServerApi { get; set; } = null!;
 
-    private void IncrementCount() {
-        currentCount++;
+    public List<ChatMessage> Messages => ServerApi.ChatMessages;
+
+    private string CurrentMessage { get; set; } = "";
+
+    private void HandleKeyDown(KeyboardEventArgs e) {
+        if (e.Key == "Enter") {
+            SubmitMessage();
+        }
+    }
+
+    private void SubmitMessage() {
+        if (string.IsNullOrWhiteSpace(CurrentMessage)) return;
+        SendMessage(CurrentMessage);
+        CurrentMessage = string.Empty;
+    }
+
+    public void SendMessage(string message) {
+        ServerApi.SendMessage(message);
     }
 }
