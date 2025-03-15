@@ -2,7 +2,6 @@ using System;
 using SpacetimeDB;
 using SpacetimeDB.Types;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -15,14 +14,14 @@ public class ServerApi {
 	private readonly ConcurrentQueue<(string Command, string Args)> input_queue = new();
 	private Timer? _timer;
 
-	public readonly List<ChatMessage> ChatMessages = [];
+	public readonly ConcurrentQueue<ChatMessage> ChatMessages = new();
 
 	public void Run() {
 		AuthToken.Init(".spacetime_csharp_quickstart");
 		var conn = ConnectToDB();
 		RegisterCallbacks(conn);
 
-		_timer = new Timer(_ => { ProcessThread(conn); }, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+		_timer = new Timer(_ => { ProcessThread(conn); }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 	}
 
 	private const string HOST = "http://localhost:3000";
@@ -50,10 +49,12 @@ public class ServerApi {
 	}
 
 	private void AddSystemMessage(string message) {
-		ChatMessages.Add(new ChatMessage(null, message));
+		Console.WriteLine(message);
+		ChatMessages.Enqueue(new ChatMessage(null, message));
 	}
 
 	private void OnConnectError(Exception e) {
+		Console.WriteLine(e);
 		AddSystemMessage($"Error while connecting: {e}");
 	}
 
@@ -106,7 +107,7 @@ public class ServerApi {
 			senderName = UserNameOrIdentity(sender);
 		}
 
-		ChatMessages.Add(new ChatMessage(senderName, message.Text));
+		ChatMessages.Enqueue(new ChatMessage(senderName, message.Text));
 	}
 
 	private void Reducer_OnSetNameEvent(ReducerEventContext ctx, string name) {
@@ -139,10 +140,11 @@ public class ServerApi {
 			conn.FrameTick();
 			ProcessCommands(conn.Reducers);
 		}
-		finally {
-			conn.Disconnect();
+		catch (Exception ex) {
+			Console.WriteLine(ex);
 			_timer?.Dispose();
 			_timer = null;
+			conn.Disconnect();
 		}
 	}
 
@@ -165,5 +167,6 @@ public class ServerApi {
 
 	public void SendMessage(string message) {
 		input_queue.Enqueue(("message", message));
+		Console.WriteLine(input_queue.Count);
 	}
 }

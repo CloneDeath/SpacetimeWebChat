@@ -6,6 +6,7 @@
 using System;
 using SpacetimeDB.ClientApi;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 
 namespace SpacetimeDB.Types
@@ -32,6 +33,10 @@ namespace SpacetimeDB.Types
         public sealed partial class ClientConnected : Reducer, IReducerArgs
         {
             string IReducerArgs.ReducerName => "ClientConnected";
+            public void ReadFields(BinaryReader reader) {
+            }
+            public void WriteFields(BinaryWriter writer) {
+            }
         }
     }
 }

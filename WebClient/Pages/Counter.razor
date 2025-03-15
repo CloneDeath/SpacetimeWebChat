@@ -21,7 +21,7 @@
 @code {
     [Inject] public ServerApi ServerApi { get; set; } = null!;
 
-    public List<ChatMessage> Messages => ServerApi.ChatMessages;
+    public List<ChatMessage> Messages => ServerApi.ChatMessages.ToList();
 
     private string CurrentMessage { get; set; } = "";
 

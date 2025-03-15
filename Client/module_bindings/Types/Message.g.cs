@@ -5,13 +5,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
+using SpacetimeDB.BSATN;
 
 namespace SpacetimeDB.Types
 {
     [SpacetimeDB.Type]
     [DataContract]
-    public sealed partial class Message
+    public sealed partial class Message : IStructuralReadWrite
     {
         [DataMember(Name = "Sender")]
         public SpacetimeDB.Identity Sender;
@@ -34,6 +36,17 @@ namespace SpacetimeDB.Types
         public Message()
         {
             this.Text = "";
+        }
+
+        public void ReadFields(BinaryReader reader) {
+            Sender = SpacetimeDB.Identity.FromHexString(reader.ReadString());
+            Sent = SpacetimeDB.Timestamp.FromTimeSpanSinceUnixEpoch(new TimeSpan(0, 0, 0, 0, reader.ReadInt32()));
+            Text = reader.ReadString();
+        }
+        public void WriteFields(BinaryWriter writer) {
+            writer.Write(Sender.ToString());
+            writer.Write(Sent.ToTimeSpanSinceUnixEpoch().Microseconds);
+            writer.Write(Text);
         }
     }
 }

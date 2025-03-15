@@ -5,6 +5,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="SpacetimeDB.ClientSDK" Version="1.0.1" />
+      <Reference Include="SpacetimeDB.BSATN.Runtime">
+        <HintPath>..\..\..\..\..\.nuget\packages\spacetimedb.bsatn.runtime\1.0.0\lib\net8.0\SpacetimeDB.BSATN.Runtime.dll</HintPath>
+      </Reference>
+      <Reference Include="SpacetimeDB.ClientSDK">
+        <HintPath>..\SpacetimeDB.ClientSDK.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

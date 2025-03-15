@@ -6,6 +6,11 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.12"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.12" PrivateAssets="all"/>
-        <PackageReference Include="SpacetimeDB.ClientSDK" Version="1.0.1" />
+        <PackageReference Include="SpacetimeDB.BSATN.Runtime" Version="1.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="SpacetimeDB.ClientSDK">
+        <HintPath>..\SpacetimeDB.ClientSDK.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

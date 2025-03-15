@@ -6,6 +6,7 @@
 using System;
 using SpacetimeDB.ClientApi;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 
 namespace SpacetimeDB.Types
@@ -51,6 +52,12 @@ namespace SpacetimeDB.Types
             }
 
             string IReducerArgs.ReducerName => "SendMessage";
+            public void ReadFields(BinaryReader reader) {
+                Text = reader.ReadString();
+            }
+            public void WriteFields(BinaryWriter writer) {
+                writer.Write(Text);
+            }
         }
     }
 
