@@ -12,4 +12,8 @@
         <HintPath>..\SpacetimeDB.ClientSDK.dll</HintPath>
       </Reference>
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="SpacetimeDB.BSATN.Runtime" Version="1.0.1" />
+      <PackageReference Include="System.Threading.Channels" Version="9.0.3" />
+    </ItemGroup>
 </Project>

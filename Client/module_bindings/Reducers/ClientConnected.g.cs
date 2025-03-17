@@ -33,10 +33,6 @@ namespace SpacetimeDB.Types
         public sealed partial class ClientConnected : Reducer, IReducerArgs
         {
             string IReducerArgs.ReducerName => "ClientConnected";
-            public void ReadFields(BinaryReader reader) {
-            }
-            public void WriteFields(BinaryWriter writer) {
-            }
         }
     }
 }

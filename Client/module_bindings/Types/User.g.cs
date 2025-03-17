@@ -35,19 +35,5 @@ namespace SpacetimeDB.Types
         public User()
         {
         }
-
-        public void ReadFields(BinaryReader reader) {
-            this.Identity = SpacetimeDB.Identity.FromHexString(reader.ReadString());
-            this.Name = reader.ReadBoolean() ? reader.ReadString() : null;
-            this.Online = reader.ReadBoolean();
-        }
-        public void WriteFields(BinaryWriter writer) {
-            writer.Write(Identity.ToString());
-            writer.Write(Name == null ? false : true);
-            if (Name != null) {
-                writer.Write(Name);
-            }
-            writer.Write(Online);
-        }
     }
 }

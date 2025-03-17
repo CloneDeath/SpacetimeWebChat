@@ -18,10 +18,14 @@
 <input @bind="CurrentMessage" @bind:event="oninput" @onkeydown="HandleKeyDown" placeholder="Type a message..."/>
 <button @onclick="SubmitMessage">Send</button>
 
+@Length
+
 @code {
     [Inject] public ServerApi ServerApi { get; set; } = null!;
 
-    public List<ChatMessage> Messages => ServerApi.ChatMessages.ToList();
+    public List<ChatMessage> Messages { get; private set; } = [];
+
+    public int Length = 0;
 
     private string CurrentMessage { get; set; } = "";
 
@@ -39,5 +43,7 @@
 
     public void SendMessage(string message) {
         ServerApi.SendMessage(message);
+        Messages = ServerApi.ChatMessages.ToList();
+        Length = ServerApi.ChatMessages.Count;
     }
 }

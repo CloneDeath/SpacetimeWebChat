@@ -33,10 +33,6 @@ namespace SpacetimeDB.Types
         public sealed partial class ClientDisconnected : Reducer, IReducerArgs
         {
             string IReducerArgs.ReducerName => "ClientDisconnected";
-            public void ReadFields(BinaryReader reader) {
-            }
-            public void WriteFields(BinaryWriter writer) {
-            }
         }
     }
 }

@@ -52,14 +52,6 @@ namespace SpacetimeDB.Types
             }
 
             string IReducerArgs.ReducerName => "SetName";
-
-
-            public void ReadFields(BinaryReader reader) {
-                Name = reader.ReadString();
-            }
-            public void WriteFields(BinaryWriter writer) {
-                writer.Write(Name);
-            }
         }
     }
 
